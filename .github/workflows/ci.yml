@@ -65,9 +65,9 @@ jobs:
         with:
           image-ref: courseup:ci
           scanners: vuln
-          # Only the libraries we ship in the app venv — not the base image's
-          # own pip/setuptools or build caches, which we don't run and can't patch.
-          pkg-types: library
+          # Only the libraries we ship in the app venv — not OS packages or the
+          # base image's own pip/setuptools, which we don't run and can't patch.
+          vuln-type: library
           skip-dirs: /root/.cache,/usr/local/lib,/usr/lib,/usr/bin
           severity: HIGH,CRITICAL
           ignore-unfixed: true
