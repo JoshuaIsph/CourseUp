@@ -1,0 +1,40 @@
+# Run `uv run pre-commit install` once to activate.
+# Update hook versions with `uv run pre-commit autoupdate`.
+default_install_hook_types: [pre-commit, pre-push]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.6
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+
+  # Slower checks run on push, not on every commit, and against the whole project.
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy (strict, whole project)
+        entry: uv run mypy
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [pre-push]
+      - id: pytest-fast
+        name: pytest (-m "not slow")
+        entry: uv run pytest -m "not slow"
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [pre-push]

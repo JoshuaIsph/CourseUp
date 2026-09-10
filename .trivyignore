@@ -1,0 +1,3 @@
+# CVE IDs listed here are ignored by the Trivy image scan in CI.
+# Use this only for un-fixable base-image findings. One ID per line, e.g.:
+# CVE-2024-12345
