@@ -2,7 +2,12 @@
 
 These are the repo settings that can't live in code. Do them once.
 
-## 1. Claude review secret
+## 1. Claude review
+
+Two separate things — the token (for the model) and the GitHub App (for
+permission to read the PR and post comments).
+
+**Token:**
 
 - Run `claude setup-token` locally (Pro/Max subscription account).
 - Copy the `sk-ant-oat01-...` value from the **terminal** (not the browser page).
@@ -10,6 +15,13 @@ These are the repo settings that can't live in code. Do them once.
   - Name: `CLAUDE_CODE_OAUTH_TOKEN`
   - Value: the token
 - Re-run and re-set if CI later fails with an auth error (the token can expire).
+
+**GitHub App:**
+
+- Install from <https://github.com/apps/claude> → Configure → pick this repo
+  (or run `/install-github-app` inside Claude Code).
+- Without it the `review` job fails with
+  `401 - Claude Code is not installed on this repository`.
 
 ## 2. Code security
 
