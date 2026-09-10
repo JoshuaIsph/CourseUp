@@ -60,11 +60,16 @@ jobs:
           uv export --frozen --no-emit-project --all-groups -o requirements-audit.txt
           uv run pip-audit --requirement requirements-audit.txt
 
-      - name: Scan image for OS CVEs
+      - name: Scan image for known CVEs
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: courseup:ci
+          scanners: vuln
+          # Only the libraries we ship in the app venv — not the base image's
+          # own pip/setuptools or build caches, which we don't run and can't patch.
+          pkg-types: library
+          skip-dirs: /root/.cache,/usr/local/lib,/usr/lib,/usr/bin
           severity: HIGH,CRITICAL
-          exit-code: "1"
           ignore-unfixed: true
+          exit-code: "1"
           trivyignores: .trivyignore

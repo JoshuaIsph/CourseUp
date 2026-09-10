@@ -9,9 +9,13 @@ on:
     types: [created]
 
 jobs:
-  # Automatic review of every non-draft PR.
+  # Automatic review of every non-draft PR (except Dependabot's — those runs
+  # don't get repo secrets, so the token would be empty).
   review:
-    if: github.event_name == 'pull_request' && github.event.pull_request.draft == false
+    if: >
+      github.event_name == 'pull_request'
+      && github.event.pull_request.draft == false
+      && github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: read
